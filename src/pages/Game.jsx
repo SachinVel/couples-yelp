@@ -30,6 +30,7 @@ export default function Login() {
     const [curWrong, setCurWrong] = useState(0);
     const [gameState, setGameState] = useState(5);
     const [selectedAlphabets, setSelectedAlphabets] = useState([]);
+    const [shareLink, setShareLink] = useState('');
 
     const [leaderboardData, setLeaderboardData] = useState([]);
 
@@ -39,7 +40,7 @@ export default function Login() {
     const [curKeyPress, setCurKeyPress] = useState(null);
 
     const [token, setToken] = useState('');
-    const [username, setUsername] = useState('');
+    const [searchWord, setSearchWord] = useState('');
 
     let interval = useRef(null);
     let timerTotalSec = useRef(0);
@@ -62,20 +63,27 @@ export default function Login() {
         setIsSnackbarOpen(false)
     }
 
-    // const getGameWord = async () => {
-    //     let originalWord = 'sachin';
-    //     let guessWord = originalWord.split('').map(() => ('_')).join('');
-
-    //     setOriginalWord(originalWord);
-    //     setGuessWord(guessWord);
-    // }
-
     const sendGameStatus = async (data) => {
         let response = await backendCall.post('/user/game', data, {
             headers: {
                 'token': token
             }
         });
+
+    }
+
+    const handleGenerateLink = async () => {
+        let data = {
+            word: searchWord
+        }
+        let response = await backendCall.post('/word/shareword', data, {
+            headers: {
+                'token': token
+            }
+        });
+        let shareId = response.data.id;
+        let shareLink = process.env.REACT_APP_FE_API + "/sharegame?id=" + shareId;
+        setShareLink(shareLink);
     }
 
     useEffect(() => {
@@ -105,7 +113,6 @@ export default function Login() {
         }
 
         let userToken = localStorage.getItem('token');
-        let username = localStorage.getItem('username');
 
         setToken(userToken);
 
@@ -117,16 +124,22 @@ export default function Login() {
 
         let shareId = window.sessionStorage.getItem('shareId');
         if (shareId != null && shareId != '') {
-            console.log('shareId : ',shareId);
-            getSharedWord(shareId);
+            console.log('shareId : ', shareId);
+            getSharedWord(shareId,userToken);
             window.sessionStorage.clear('shareId')
         }
 
     }, []);
 
 
-    const getSharedWord = (shareId)=>{
-        let sharedWord = 'Shared'
+    const getSharedWord = async (shareId, userToken) => {
+        let response = await backendCall.get('/word/'+shareId, {
+            headers: {
+                'token': userToken
+            }
+        });
+
+        let sharedWord = response.data.word;
         let originalWord = sharedWord.toLowerCase();
         let guessWord = originalWord.split('').map(() => ('_')).join('');
 
@@ -247,12 +260,6 @@ export default function Login() {
         setTopicList(response.data.topicList);
     }
 
-    // useEffect(() => {
-    //     if (gameType === 'play') {
-            
-    //     }
-    // }, [gameType]);
-
     const handleResetGame = () => {
         clearInterval(interval.current);
         setGameType('');
@@ -301,7 +308,7 @@ export default function Login() {
                     {
                         gameType === '' &&
                         <Box className="btn-container">
-                            <Button variant='contained' className='game-btn' onClick={() => { setGameState(3);setGameType('play') }}>Play the Game</Button>
+                            <Button variant='contained' className='game-btn' onClick={() => { setGameState(3); setGameType('play') }}>Play the Game</Button>
                             <Typography>or</Typography>
                             <Button variant='contained' className='game-btn' onClick={() => { setGameType('share') }}>Share the Game</Button>
                         </Box>
@@ -388,12 +395,16 @@ export default function Login() {
                     {
                         gameType === 'share' &&
                         <Box className="share-container">
-                            <TextField label="Give a word"></TextField>
-                            {
-
-                            }
+                            <TextField label="Give a word" value={searchWord} onChange={(event) => {
+                                let curStr = event.target.value;
+                                let isValid = /^[A-Za-z]*$/.test(curStr);
+                                if (isValid) {
+                                    setSearchWord(curStr);
+                                }
+                            }}></TextField>
+                            {shareLink !== '' && <Typography>{shareLink}</Typography>}
                             <Stack gap={2} direction="row">
-                                <Button variant='contained' onClick={() => { }}>Generate Link</Button>
+                                <Button variant='contained' onClick={() => { handleGenerateLink() }} disabled={searchWord === ''}>Generate Link</Button>
                                 <Button variant='contained' onClick={() => { handleResetGame() }}>Reset</Button>
                             </Stack>
 
