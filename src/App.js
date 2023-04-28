@@ -33,7 +33,7 @@ function App() {
         }
       >
         <Routes>
-          <Route exact path="/" element={checkLogin() ? <Navigate to='/task' /> : <Navigate to='/login' />}>
+          <Route exact path="/" element={checkLogin() ? <Navigate to='/game' /> : <Navigate to='/login' />}>
           </Route>
           <Route path="/login" element={checkLogin() ? <Navigate to='/game' /> : <Login />} />
           <Route path="/register" element={<Register />} />
