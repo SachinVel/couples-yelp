@@ -5,7 +5,6 @@ import '../styles/Game.css';
 import Header from '../components/Header';
 
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
 import { backendCall } from "../utils/network";
 
 import img0 from "../images/hangman-0.jpg";
@@ -15,8 +14,10 @@ import img3 from "../images/hangman-3.jpg";
 import img4 from "../images/hangman-4.jpg";
 import img5 from "../images/hangman-5.jpg";
 import img6 from "../images/hangman-6.jpg";
-import { fontWeight, padding } from '@xstyled/styled-components';
 import { DataGrid } from '@mui/x-data-grid';
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { point } from 'leaflet';
 
 
 
@@ -125,15 +126,17 @@ export default function Login() {
         let shareId = window.sessionStorage.getItem('shareId');
         if (shareId != null && shareId != '') {
             console.log('shareId : ', shareId);
-            getSharedWord(shareId,userToken);
+            getSharedWord(shareId, userToken);
             window.sessionStorage.clear('shareId')
+        } else {
+            setGameType('start');
         }
 
     }, []);
 
 
     const getSharedWord = async (shareId, userToken) => {
-        let response = await backendCall.get('/word/'+shareId, {
+        let response = await backendCall.get('/word/' + shareId, {
             headers: {
                 'token': userToken
             }
@@ -262,7 +265,7 @@ export default function Login() {
 
     const handleResetGame = () => {
         clearInterval(interval.current);
-        setGameType('');
+        setGameType('start');
     }
 
     const handleTopicSelect = async (topic) => {
@@ -306,7 +309,7 @@ export default function Login() {
             <Box className="container">
                 <Box className="game-container">
                     {
-                        gameType === '' &&
+                        gameType === 'start' &&
                         <Box className="btn-container">
                             <Button variant='contained' className='game-btn' onClick={() => { setGameState(3); setGameType('play') }}>Play the Game</Button>
                             <Typography>or</Typography>
@@ -338,6 +341,7 @@ export default function Login() {
                                             ))
                                         }
                                     </Box>
+                                    <Button variant='contained' onClick={() => { handleResetGame() }}>Reset</Button>
                                 </>
                             }
                             {
@@ -402,7 +406,21 @@ export default function Login() {
                                     setSearchWord(curStr);
                                 }
                             }}></TextField>
-                            {shareLink !== '' && <Typography>{shareLink}</Typography>}
+                            {shareLink !== '' &&
+                                <Stack gap={2} direction="row" sx={{
+                                    backgroundColor : "#ccc",
+                                    padding : "5px",
+                                    borderRadius : "3px",
+                                    cursor: "pointer"
+                                }} onClick={()=>{
+                                    window.navigator.clipboard.writeText(shareLink);
+                                    setErrorMessage('link copied successfully');
+                                    setIsSnackbarOpen(true);
+                                }}>
+                                    <Typography>{shareLink}</Typography>
+                                    <ContentCopyIcon />
+                                </Stack>
+                            }
                             <Stack gap={2} direction="row">
                                 <Button variant='contained' onClick={() => { handleGenerateLink() }} disabled={searchWord === ''}>Generate Link</Button>
                                 <Button variant='contained' onClick={() => { handleResetGame() }}>Reset</Button>
@@ -411,7 +429,7 @@ export default function Login() {
                         </Box>
                     }
                 </Box>
-                <Divider orientation='vertical' />
+                <Divider orientation='vertical' className='game-divider'/>
                 <Box className="board-container">
                     <Typography className='board-title'>Leaderboard</Typography>
                     {
@@ -436,7 +454,7 @@ export default function Login() {
                 </Box>
             </Box>
             <Snackbar open={isSnackbarOpen} autoHideDuration={4000} onClose={hanldeSnackbarClose}>
-                <Alert severity="error" onClose={hanldeSnackbarClose}>{errorMesage}</Alert>
+                <Alert severity="success" onClose={hanldeSnackbarClose}>{errorMesage}</Alert>
             </Snackbar>
         </>
 
