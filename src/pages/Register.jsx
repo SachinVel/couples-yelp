@@ -43,7 +43,7 @@ export default function Login() {
       return;
     }
 
-   await backendCall.post('/register', {
+   await backendCall.post('/user/register', {
       username: username,
       password: password,
     }).then((res) => {

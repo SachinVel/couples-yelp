@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Link } from '@mui/material';
 import '../styles/Layout.css';
 import Header from '../components/Header';
@@ -33,13 +33,15 @@ export default function Login() {
   const login = async (event) => {
     event.preventDefault();
 
-    await backendCall.post('/login', {
+    
+
+    await backendCall.post('/user/login', {
       username: username,
       password: password,
     }).then((res) => {
       window.localStorage.setItem('token', res.data.token);
-      window.localStorage.setItem('username', res.data.username);
-      window.location = '/task';
+      window.localStorage.setItexm('username', res.data.username);
+      window.location = '/game';
     }).catch((err) => {
       if (err.response && err.response.data && err.response.data.error) {
         setErrorMessage(err.response.data.error);
@@ -52,12 +54,12 @@ export default function Login() {
     setIsSnackbarOpen(false)
   }
 
-  // useEffect(()=>{
-  //   let userToken = localStorage.getItem('token');
-  //   if( userToken!=null && userToken!='' ){
-  //     window.location = '/task';
-  //   }
-  // },[])
+  useEffect(()=>{
+    let userToken = localStorage.getItem('token');
+    if( userToken!=null && userToken!='' ){
+      window.location = '/game';
+    }
+  },[])
 
   return (
     <>

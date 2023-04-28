@@ -3,6 +3,7 @@ import './App.css';
 import { Box, CircularProgress } from "@mui/material";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import React, { lazy, Suspense, useEffect } from "react";
+import ShareGame from './pages/ShareGame';
 
 
 const Game = lazy(() => import("./pages/Game"));
@@ -37,6 +38,7 @@ function App() {
           <Route path="/login" element={checkLogin() ? <Navigate to='/game' /> : <Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/game" element={checkLogin() ? <Game /> : <Navigate to='/login' />} />
+          <Route path="/sharegame" element={<ShareGame/>} />
         </Routes>
       </Suspense>
     </BrowserRouter>
