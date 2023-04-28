@@ -32,15 +32,11 @@ export default function Login() {
 
   const login = async (event) => {
     event.preventDefault();
-
-    
-
     await backendCall.post('/user/login', {
       username: username,
       password: password,
     }).then((res) => {
       window.localStorage.setItem('token', res.data.token);
-      window.localStorage.setItexm('username', res.data.username);
       window.location = '/game';
     }).catch((err) => {
       if (err.response && err.response.data && err.response.data.error) {
