@@ -17,7 +17,6 @@ import img6 from "../images/hangman-6.jpg";
 import { DataGrid } from '@mui/x-data-grid';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { point } from 'leaflet';
 
 
 
