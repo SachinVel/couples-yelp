@@ -1,0 +1,109 @@
+.container{
+    display: flex;
+    height: calc(100% - 80px);
+
+}
+.game-container{
+    min-height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.btn-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.board-container{
+    height: calc( 100% - 40px );
+    width: calc( 50% - 60px );
+    padding: 20px 30px;
+}
+
+.board-title{
+    font-size: 25px;
+    font-weight: bold;
+    height: 40px;
+    margin: 10px 0px;
+}
+
+.user-board{
+    height: calc( 100% - 60px);
+}
+
+.game-btn{
+    margin: 20px 0px;
+    width: 200px;
+}
+
+.hangman-img{
+    border : 1px solid black;
+    height: 300px;
+}
+
+.wrong-guess-text{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.guess-word-container{
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.guess-word-letter{
+    font-size: 25px;
+    font-weight: bold;
+    margin: 10px 0px;
+}
+
+.alphabet-container{
+    display: flex;
+    gap: 10px;
+    max-width: 400px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 10px 0px;
+    justify-content: center;
+}
+.alphabet-btn{
+    background-color: #ffd400;
+    padding: 5px 15px;
+    width: 20px;
+    color: black;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.alphabet-btn--selected{
+    padding: 5px 15px;
+    width: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+}
+
+.timer{
+    margin : 10px 0px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.share-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    gap: 20px;
+}

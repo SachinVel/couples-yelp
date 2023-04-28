@@ -1,8 +1,0 @@
-.board-container {
-    min-height: calc(100% - 200px);
-    padding: 10px 0px;
-    /* like display:flex but will allow bleeding over the window width */
-    min-width: 100vw;
-    display: flex;
-    justify-content: space-evenly;
-}

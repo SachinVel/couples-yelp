@@ -10,13 +10,10 @@ export default function Header() {
 
   return (
       <Box className="header-container">
-        {/* <TagIcon fontSize="large" sx={{
-            color : "#fbe608"
-        }}/> */}
         <Typography sx={{
             fontSize : "25px",
             fontWeight : "bold"
-        }}>Task Tracker</Typography>
+        }}>Hangman</Typography>
       </Box>
   );
 }
