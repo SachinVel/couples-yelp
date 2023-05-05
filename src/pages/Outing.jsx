@@ -40,8 +40,6 @@ export default function Home() {
         { field: 'friend', headerName: 'Friend', flex: 2, headerClassName: 'list-header' },
         {
             field: 'date', headerName: 'Date', flex: 1, headerClassName: 'list-header',
-            valueFormatter: row =>
-                moment(row.date).format("DD/MM/YYYY"),
         },
         {
             field: 'isFinalized', headerName: 'Is Finalized', flex: 1, headerClassName: 'list-header',
@@ -89,28 +87,30 @@ export default function Home() {
         )
     }
 
-    useEffect(() => {
-        const getUserOutings = async (userToken) => {
+    const getUserOutings = async (userToken=token) => {
 
-            let response = await backendCall.get('/outing/getAllOutings', {
-                headers: {
-                    'token': userToken
-                }
-            });
-
-            console.log('response : ',response);
-            if( response.data && response.data.outings ){
-                let newData = response.data.outings.map((outing)=>{
-                    let res = {};
-                    res.id = outing.id;
-                    res.friend = outing.friend.username;
-                    res.isFinalized = outing.isFinalized;
-                    res.date = outing.date;
-                    return res;
-                })
-                setOutingList(newData);
+        let response = await backendCall.get('/outing/getAllOutings', {
+            headers: {
+                'token': userToken
             }
+        });
+
+        console.log('response : ',response);
+        if( response.data && response.data.outings ){
+            let newData = response.data.outings.map((outing)=>{
+                let res = {};
+                res.id = outing.id;
+                res.friend = outing.friend.username;
+                res.isFinalized = outing.isFinalized;
+                res.date = dayjs(+outing.date).format("MM/DD/YYYY");
+                return res;
+            })
+            setOutingList(newData);
         }
+    }
+
+    useEffect(() => {
+        
 
         const getFriendsList = async (userToken) => {
             let response = await backendCall.get('/user/getFriends', {
@@ -163,19 +163,21 @@ export default function Home() {
             friendRole : friendRole
         }
 
-        console.log('handle Outing Data : ',outingData);
-
         let response = await backendCall.post('/outing/createOuting', outingData, {
             headers: {
                 'token': token
             }
         });
 
-        console.log('response : ',response);
+        await getUserOutings();
 
         setSnackType('success');
         setMessage('Outing created successfully');
         setIsSnackbarOpen(true);
+        
+        setIsDialogOpen(false);
+        
+        
     }
 
     const handleUserRoleChange = (event, newRole) => {

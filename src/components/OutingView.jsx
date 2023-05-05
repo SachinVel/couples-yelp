@@ -163,11 +163,13 @@ const OutingView = ({ outingId, setOutingId, token }) => {
 
     const handleStep1Approve = () => {
         let curstep1 = origOutingData.current.step1;
-        if( curstep1.location==null || curstep1.location=='' || curstep1.price==null || curstep1.price=='' || curstep1.cusine==null || curstep1.cusine=='' ){
+        let data = curstep1.data;
+        console.log('step1 : ',curstep1);
+        if( data.location==null || data.location=='' || data.price==null || data.price=='' || data.cusine==null || data.cusine=='' ){
             setSnackType('error');
             setMessage('Some fields are empty. So cannot approve');
             setIsSnackbarOpen(true);
-            return
+            return;
         }
         curstep1.isFinalized = true;
         let newOutingData = {
@@ -248,7 +250,7 @@ const OutingView = ({ outingId, setOutingId, token }) => {
         });
 
         console.log('update response : ',response);
-        
+
         origOutingData.current = outingData;
 
     }
@@ -258,7 +260,7 @@ const OutingView = ({ outingId, setOutingId, token }) => {
         curstep1.data = {};
         curstep1.data.location = locationStr;
         curstep1.data.price = price;
-        curstep1.data.cusinse = cusine;
+        curstep1.data.cusine = cusine;
         let newOutingData = {
             step1: curstep1,
             ...origOutingData.current
