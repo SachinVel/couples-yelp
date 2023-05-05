@@ -1,0 +1,10 @@
+.outing-container{
+    height: 100%;
+    padding: 20px;
+}
+.outing-list{
+    width: 80%;
+    height: 80%;
+    min-height: 500px;
+    margin: 20px 10%;
+}

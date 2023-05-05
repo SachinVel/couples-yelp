@@ -1,0 +1,32 @@
+.friend-btn-container{
+    display: flex;
+    padding: 20px 50px;
+    width: 100%;
+}
+.list-header{
+    background-color: #ffd402;
+    font-weight: 500;
+    border: 1px solid #d5d5d5,
+}
+
+.friends-board{
+    width: 100%;
+    padding: 20px;
+    min-height: 400px;
+    max-height: 600px;
+}
+
+
+.table-container{
+    width: 50%;
+    margin: 20px 0px;
+}
+
+.friends-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: 'center';
+    flex-direction: column;
+    align-items: center;
+}
