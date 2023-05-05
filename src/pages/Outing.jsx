@@ -306,7 +306,7 @@ export default function Home() {
                                     <Typography>Option Provider</Typography>
                                 </ToggleButton>
                                 <ToggleButton value="2" >
-                                    <Typography>Approver</Typography>
+                                    <Typography>Approver  </Typography>
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </Box>
