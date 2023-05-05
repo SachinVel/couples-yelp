@@ -14,6 +14,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Logout = lazy(() => import("./pages/Logout"));
 const Friends = lazy(() => import("./pages/Friends"));
+const About = lazy(() => import("./pages/About"));
 
 
 
@@ -46,11 +47,13 @@ function App() {
           <Sidebar />
           <Box className="body-container">
             <Routes>
+            <Route path="/" exact element={loggedIn ? <Navigate to='/outing' state={{ isLoggedIn: true }} /> : <Navigate to='/login' state={{ showLoginNecessary: true }} />} />
               <Route path="/login" exact element={loggedIn ? <Navigate to='/outing' state={{ isLoggedIn: true }} /> : <Login setLoggedIn={setLoggedIn} />} />
               <Route path="/outing" element={loggedIn ? <Outing /> : <Navigate to='/login' state={{ showLoginNecessary: true }} />} />
               <Route path="/friends" element={loggedIn ? <Friends /> : <Navigate to='/login' state={{ showLoginNecessary: true }} /> }/>
               <Route path="/register" element={<Register setLoggedIn={setLoggedIn}/>} />
               <Route path="/logout" element={<Logout setLoggedIn={setLoggedIn}/>} />
+              <Route path="/about" element={<About />} />
             </Routes>
           </Box>
         </Suspense>

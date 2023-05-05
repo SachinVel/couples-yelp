@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, TextField, Link, Box, Alert, Divider, Typography, Stack, Select, Dialog, DialogTitle, MenuItem, InputLabel, FormControl, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Button, TextField, Link, Box, Alert, Divider, Typography, Stack, Select, Dialog, DialogTitle, MenuItem, InputLabel, FormControl, ToggleButtonGroup, ToggleButton, Tooltip } from '@mui/material';
 import '../styles/Layout.css';
 import '../styles/Outing.css';
 
@@ -13,6 +13,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import OutingView from '../components/OutingView';
 import { backendCall } from '../utils/network';
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function Home() {
 
@@ -35,6 +36,8 @@ export default function Home() {
     const handleViewOuting = (outingId) => {
         setOutingId(outingId);
     }
+
+    const Infomessage = 'Hello world';
 
     const outingColumns = [
         { field: 'friend', headerName: 'Friend', flex: 2, headerClassName: 'list-header' },
@@ -87,7 +90,7 @@ export default function Home() {
         )
     }
 
-    const getUserOutings = async (userToken=token) => {
+    const getUserOutings = async (userToken = token) => {
 
         let response = await backendCall.get('/outing/getAllOutings', {
             headers: {
@@ -95,9 +98,9 @@ export default function Home() {
             }
         });
 
-        console.log('response : ',response);
-        if( response.data && response.data.outings ){
-            let newData = response.data.outings.map((outing)=>{
+        console.log('response : ', response);
+        if (response.data && response.data.outings) {
+            let newData = response.data.outings.map((outing) => {
                 let res = {};
                 res.id = outing.id;
                 res.friend = outing.friend.username;
@@ -110,7 +113,7 @@ export default function Home() {
     }
 
     useEffect(() => {
-        
+
 
         const getFriendsList = async (userToken) => {
             let response = await backendCall.get('/user/getFriends', {
@@ -150,17 +153,17 @@ export default function Home() {
     }
 
     const handleAddOuting = async () => {
-        if( selectedFriendId==null || selectedFriendId=='' || outingDate==null || userRole==null || friendRole==null ){
+        if (selectedFriendId == null || selectedFriendId == '' || outingDate == null || userRole == null || friendRole == null) {
             setSnackType('error');
             setMessage('Some fields are empty');
             setIsSnackbarOpen(true);
             return;
         }
         let outingData = {
-            friendId : selectedFriendId,
-            date : (outingDate.unix()*1000)+'',
-            userRole : userRole,
-            friendRole : friendRole
+            friendId: selectedFriendId,
+            date: (outingDate.unix() * 1000) + '',
+            userRole: userRole,
+            friendRole: friendRole
         }
 
         let response = await backendCall.post('/outing/createOuting', outingData, {
@@ -174,10 +177,10 @@ export default function Home() {
         setSnackType('success');
         setMessage('Outing created successfully');
         setIsSnackbarOpen(true);
-        
+
         setIsDialogOpen(false);
-        
-        
+
+
     }
 
     const handleUserRoleChange = (event, newRole) => {
@@ -233,7 +236,7 @@ export default function Home() {
 
             {
                 outingId != null &&
-                <OutingView outingId={outingId} setOutingId={setOutingId} token={token}/>
+                <OutingView outingId={outingId} setOutingId={setOutingId} token={token} />
             }
 
 

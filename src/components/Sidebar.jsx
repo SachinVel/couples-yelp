@@ -8,6 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import '../styles/Layout.css';
 import '../styles/Sidebar.css';
 import { Box } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 const sidebarNavItems = [
     {
@@ -39,6 +40,12 @@ const sidebarNavItems = [
         icon: <LogoutIcon />,
         to: '/logout',
         section: 'logout'
+    },
+    {
+        display: 'About',
+        icon: <InfoIcon />,
+        to: '/about',
+        section: 'about'
     }
 ]
 
